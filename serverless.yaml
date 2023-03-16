@@ -1,0 +1,18 @@
+service: sls-bgc
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: dev
+  region: sa-east-1
+  memorySize: 128
+  timeout: 3
+
+functions:
+  handler:
+    handler: index.handler
+    description:
+    runtime:
+    memorySize:
+    timeout: 3
+    events:
