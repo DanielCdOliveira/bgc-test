@@ -5,14 +5,14 @@ provider:
   runtime: nodejs14.x
   stage: dev
   region: sa-east-1
-  memorySize: 128
-  timeout: 3
+  memorySize: 512
+  timeout: 200
 
 functions:
   handler:
     handler: index.handler
     description:
     runtime:
-    memorySize:
-    timeout: 3
+    memorySize: 512
+    timeout: 200
     events:
