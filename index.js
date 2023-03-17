@@ -1,10 +1,9 @@
-import chromium from "@sparticuz/chromium";
-import puppeteerExtra from "puppeteer-extra";
-export async function handler(event, context) {
-  const browser = await puppeteerExtra.launch({
+const chromium = require("chrome-aws-lambda");
+module.exports.handler = async (event) => {
+  const browser = await chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
-    executablePath: await chromium.executablePath(),
+    executablePath: await chromium.executablePath,
     headless: chromium.headless,
     ignoreHTTPSErrors: true,
   });
@@ -14,6 +13,7 @@ export async function handler(event, context) {
     height: 1080,
   });
   await page.goto("https://www.amazon.com.br/bestsellers");
+  // await page.waitForSelector(".a-begin");
   const result = await page.$$eval(".a-begin", (nodes) => {
     return nodes.map((node) => {
       const category = node.querySelector("h2").innerText;
@@ -47,10 +47,11 @@ export async function handler(event, context) {
       return bestsellers;
     });
   });
+
   browser.close();
   console.log(result);
   return {
     statusCode: 200,
     body: JSON.stringify(result),
   };
-}
+};

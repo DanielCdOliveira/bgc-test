@@ -1,7 +1,6 @@
 {
   "name": "bgc",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,8 +13,7 @@
     "serverless": "^3.28.1"
   },
   "dependencies": {
-    "@sparticuz/chromium": "^110.0.1",
-    "puppeteer-core": "19.6",
-    "puppeteer-extra": "^3.3.6"
+    "chrome-aws-lambda": "^10.1.0",
+    "puppeteer-core": "^10.1.0"
   }
 }
