@@ -1,4 +1,5 @@
 const chromium = require("chrome-aws-lambda");
+const Responses = require("./API_Responses.js");
 module.exports.handler = async (event) => {
   const browser = await chromium.puppeteer.launch({
     args: chromium.args,
@@ -13,7 +14,7 @@ module.exports.handler = async (event) => {
     height: 1080,
   });
   await page.goto("https://www.amazon.com.br/bestsellers");
-  // await page.waitForSelector(".a-begin");
+  await page.waitForSelector(".a-begin");
   const result = await page.$$eval(".a-begin", (nodes) => {
     return nodes.map((node) => {
       const category = node.querySelector("h2").innerText;
@@ -50,8 +51,5 @@ module.exports.handler = async (event) => {
 
   browser.close();
   console.log(result);
-  return {
-    statusCode: 200,
-    body: JSON.stringify(result),
-  };
+  return Responses._200(result);
 };

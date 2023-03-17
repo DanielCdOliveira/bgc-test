@@ -9,10 +9,10 @@ provider:
   timeout: 200
 
 functions:
-  handler:
-    handler: index.handler
-    description:
-    runtime:
-    memorySize: 512
-    timeout: 200
+  getBestSellers:
+    handler: lambdas/getBestSellers.handler
     events:
+      - http:
+          path: bestSellers
+          method: get
+          cors: true
