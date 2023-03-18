@@ -1,5 +1,7 @@
 const chromium = require("chrome-aws-lambda");
 const Responses = require("../commom/API_Responses.js");
+const Dynamo = require("../commom/Dynamo.js");
+const tableName = process.env.tableName;
 module.exports.handler = async (event) => {
   const date = new Date().toLocaleDateString("en-US").replace(/\//g, "-");
   const browser = await chromium.puppeteer.launch({
@@ -49,8 +51,16 @@ module.exports.handler = async (event) => {
       return bestsellers;
     });
   });
-
   browser.close();
-  console.log(result);
-  return Responses._200({ ID: date, bestSellers: result });
+  const bestSellersDB = { ID: date, bestSellers: result };
+  const newBestSellersDB = await Dynamo.write(bestSellersDB, tableName).catch(
+    (err) => {
+      console.log("Error in Dynamo write", err);
+      return null;
+    }
+  );
+  if (!newBestSellersDB) {
+    return Responses._400({ message: "Failed to write bestsellers" });
+  }
+  return Responses._200(newBestSellersDB);
 };
