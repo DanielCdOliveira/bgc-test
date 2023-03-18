@@ -6,14 +6,28 @@ provider:
   stage: dev
   region: sa-east-1
   memorySize: 512
-  timeout: 200
+  timeout: 30
+  environment:
+    tableName: ${self:custom.tableName}
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:*
+      Resource: "*"
 
 functions:
   getBestSellers:
-    handler: lambdas/getBestSellers.handler
+    handler: lambdas/endpoints/getBestSellers.handler
     events:
       - http:
           path: bestSellers
+          method: get
+          cors: true
+  getData:
+    handler: lambdas/endpoints/getData.handler
+    events:
+      - http:
+          path: data/{date}
           method: get
           cors: true
 

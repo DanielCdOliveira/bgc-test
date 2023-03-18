@@ -10,5 +10,16 @@ const Responses = {
       body: JSON.stringify(data),
     };
   },
+  _404(data = {}) {
+    return {
+      headers: {
+        "Content-Type": "application/json",
+        "Acess-Control-Allow-Methods": "*",
+        "Acess-Control-Allow-Origin": "*",
+      },
+      statusCode: 404,
+      body: JSON.stringify(data),
+    };
+  },
 };
 module.exports = Responses;

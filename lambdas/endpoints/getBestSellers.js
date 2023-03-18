@@ -1,5 +1,5 @@
 const chromium = require("chrome-aws-lambda");
-const Responses = require("./API_Responses.js");
+const Responses = require("../commom/API_Responses.js");
 module.exports.handler = async (event) => {
   const browser = await chromium.puppeteer.launch({
     args: chromium.args,
@@ -51,5 +51,5 @@ module.exports.handler = async (event) => {
 
   browser.close();
   console.log(result);
-  return Responses._200(result);
+  return Responses._200({ result });
 };
