@@ -1,6 +1,7 @@
 const chromium = require("chrome-aws-lambda");
 const Responses = require("../commom/API_Responses.js");
 module.exports.handler = async (event) => {
+  const date = new Date().toLocaleDateString("en-US").replace(/\//g, "-");
   const browser = await chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
@@ -51,5 +52,5 @@ module.exports.handler = async (event) => {
 
   browser.close();
   console.log(result);
-  return Responses._200({ result });
+  return Responses._200({ ID: date, bestSellers: result });
 };
