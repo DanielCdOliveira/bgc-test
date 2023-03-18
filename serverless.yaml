@@ -16,18 +16,15 @@ provider:
       Resource: "*"
 
 functions:
+  cronScrapAmazon:
+    handler: lambdas/schedulesTasks/cronScrapAmazon.handler
+    events:
+      - schedule: cron(1 21 * * ? *)
   getBestSellers:
     handler: lambdas/endpoints/getBestSellers.handler
     events:
       - http:
-          path: bestSellers
-          method: get
-          cors: true
-  getData:
-    handler: lambdas/endpoints/getData.handler
-    events:
-      - http:
-          path: data/{date}
+          path: bestSellers/{date}
           method: get
           cors: true
 
