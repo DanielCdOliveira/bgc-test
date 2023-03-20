@@ -49,7 +49,7 @@ For this, a cron was configured that triggers the web scrapper at 4:00 am UTC.
 
 ```yml
 GET /bestSellers/{date}
-    - Route to get list of bestseller on the date
+    - Route to get list of bestseller on the date (MM-DD-YYYY)
     - headers: {}
     - body:{}
 ```
