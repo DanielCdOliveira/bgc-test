@@ -48,7 +48,7 @@ Just modify the hour (from 0 to 23) and minute(from 0 to 59) to a time close to 
 For this, a cron was configured that triggers the web scrapper at 4:00 am UTC.
 
 ```yml
-GET /bestSellers/{date}
+GET /bestsellers/{date}
     - Route to get list of bestseller on the date (MM-DD-YYYY)
     - headers: {}
     - body:{}
