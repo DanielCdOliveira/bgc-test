@@ -24,7 +24,7 @@ functions:
     handler: lambdas/endpoints/getBestSellers.handler
     events:
       - http:
-          path: bestSellers/{date}
+          path: bestsellers/{date}
           method: get
           cors: true
 
