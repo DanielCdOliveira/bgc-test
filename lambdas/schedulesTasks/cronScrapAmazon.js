@@ -3,7 +3,17 @@ const Responses = require("../commom/API_Responses.js");
 const Dynamo = require("../commom/Dynamo.js");
 const tableName = process.env.tableName;
 module.exports.handler = async (event) => {
-  const date = new Date().toLocaleDateString("en-US").replace(/\//g, "-");
+  // formatando data atual
+  const dateNow = new Date().toLocaleDateString("en-US");
+  const dateArray = dateNow.split("/");
+  if (dateArray[0].length < 2) {
+    dateArray[0] = "0" + dateArray[0];
+  }
+  if (dateArray[1].length < 2) {
+    dateArray[1] = "0" + dateArray[1];
+  }
+  const date = dateArray.join("-");
+  // configurando o puppeteer
   const browser = await chromium.puppeteer.launch({
     args: chromium.args,
     defaultViewport: chromium.defaultViewport,
@@ -18,15 +28,16 @@ module.exports.handler = async (event) => {
   });
   await page.goto("https://www.amazon.com.br/bestsellers");
   await page.waitForSelector(".a-begin");
+  // scrapping dos dados do site da amazon
   const result = await page.$$eval(".a-begin", (nodes) => {
     return nodes.map((node) => {
-      const category = node.querySelector("h2").innerText;
+      const categoryArray = node.querySelector("h2").innerText.split(" ");
+      const category = categoryArray[categoryArray.length - 1];
       const detailCategory = node.querySelector("ol");
       const bestsellersCategory = Array.from(
         detailCategory.querySelectorAll("li")
       );
       const topThree = bestsellersCategory.slice(0, 3);
-      console.log(topThree);
       const items = topThree.map((item, index) => {
         const linkImg = item.querySelector("img").getAttribute("src");
         const linkProduct =
@@ -52,6 +63,7 @@ module.exports.handler = async (event) => {
     });
   });
   browser.close();
+  // salvando no dynamo db
   const bestSellersDB = { ID: date, bestSellers: result };
   const newBestSellersDB = await Dynamo.write(bestSellersDB, tableName).catch(
     (err) => {

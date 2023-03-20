@@ -14,7 +14,6 @@ const Dynamo = {
     if (!data || !data.Item) {
       throw Error("ERROR IN DYNAMODB");
     }
-    console.log(data);
     return data.Item;
   },
   async write(data, TableName) {

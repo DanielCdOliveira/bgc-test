@@ -19,7 +19,7 @@ functions:
   cronScrapAmazon:
     handler: lambdas/schedulesTasks/cronScrapAmazon.handler
     events:
-      - schedule: cron(1 21 * * ? *)
+      - schedule: cron(0 4 * * ? *)
   getBestSellers:
     handler: lambdas/endpoints/getBestSellers.handler
     events:
